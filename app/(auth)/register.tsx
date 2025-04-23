@@ -18,7 +18,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { register: registerUser } = useAuth();
-
+  const [showPassword, setShowPassword] = useState(false);
   const {
     control,
     handleSubmit,
@@ -115,7 +115,7 @@ const Register = () => {
               <Input
                 value={field.value}
                 placeholder="Enter your password"
-                secureTextEntry
+                secureTextEntry={!showPassword}
                 onChangeText={field.onChange}
                 icon={
                   <Icons.Lock
@@ -123,6 +123,21 @@ const Register = () => {
                     color={colors.neutral300}
                     weight="fill"
                   />
+                }
+                endIcon={
+                  <Pressable onPress={() => setShowPassword(!showPassword)}>
+                    {showPassword ? (
+                      <Icons.EyeSlash
+                        size={verticalScale(26)}
+                        color={colors.neutral400}
+                      />
+                    ) : (
+                      <Icons.Eye
+                        size={verticalScale(26)}
+                        color={colors.neutral400}
+                      />
+                    )}
+                  </Pressable>
                 }
               />
             )}
@@ -143,7 +158,7 @@ const Register = () => {
         {/* footer */}
         <View style={styles.footer}>
           <Typo size={15}>Already have an account ?</Typo>
-          <Pressable onPress={() => router.navigate("/(auth)/login")}>
+          <Pressable onPress={() => router.replace("/(auth)/login")}>
             <Typo size={15} color={colors.primary} fontWeight={"700"}>
               Log in
             </Typo>

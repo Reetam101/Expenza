@@ -108,6 +108,7 @@ export interface InputProps extends TextInputProps {
   containerStyle?: ViewStyle;
   inputStyle?: TextStyle;
   inputRef?: React.RefObject<TextInput>;
+  endIcon?: React.ReactNode;
   //   label?: string;
   //   error?: string;
 }

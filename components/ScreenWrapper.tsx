@@ -9,7 +9,8 @@ import {
 import React from "react";
 import { ScreenWrapperProps } from "@/types";
 import { colors } from "@/constants/theme";
-
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { verticalScale } from "@/utils/styling";
 const { height } = Dimensions.get("window");
 
 const ScreenWrapper = ({ style, children }: ScreenWrapperProps) => {
@@ -23,7 +24,14 @@ const ScreenWrapper = ({ style, children }: ScreenWrapperProps) => {
       ]}
     >
       <StatusBar barStyle={"dark-content"} />
-      {children}
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        extraScrollHeight={verticalScale(5)}
+        enableOnAndroid={true}
+      >
+        {children}
+      </KeyboardAwareScrollView>
     </View>
   );
 };

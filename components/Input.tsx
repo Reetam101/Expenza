@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import React from "react";
 import { InputProps } from "@/types";
 import { colors, radius, spacingX } from "@/constants/theme";
@@ -16,6 +23,7 @@ const Input = (props: InputProps) => {
         placeholderTextColor={colors.neutral400}
         ref={props.inputRef && props.inputRef}
       />
+      {props.endIcon && props.endIcon}
     </View>
   );
 };

@@ -12,12 +12,12 @@ import { useRouter } from "expo-router";
 import { LoginFormType, loginSchema } from "@/utils/validation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/contexts/authContext";
 
 const Login = () => {
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     control,
@@ -27,18 +27,16 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginFormType) => {
-    console.log(data);
-  };
+  const { login: loginUser } = useAuth();
 
-  // const handleSubmit = async () => {
-  //   if (!emailRef.current || !passwordRef.current) {
-  //     Alert.alert("Login", "Please fill all the field");
-  //     return;
-  //   }
-  //   console.log(emailRef.current);
-  //   console.log(passwordRef.current);
-  // };
+  const onSubmit = async (data: LoginFormType) => {
+    setIsLoading(true);
+    const res = await loginUser(data.email, data.password);
+    setIsLoading(false);
+    if (!res.success) {
+      Alert.alert("Login", res.msg);
+    }
+  };
 
   return (
     <ScreenWrapper>
@@ -89,7 +87,7 @@ const Login = () => {
               <Input
                 value={field.value}
                 placeholder="Enter your password"
-                secureTextEntry
+                secureTextEntry={!showPassword}
                 onChangeText={field.onChange}
                 icon={
                   <Icons.Lock
@@ -97,6 +95,21 @@ const Login = () => {
                     color={colors.neutral300}
                     weight="fill"
                   />
+                }
+                endIcon={
+                  <Pressable onPress={() => setShowPassword(!showPassword)}>
+                    {showPassword ? (
+                      <Icons.EyeSlash
+                        size={verticalScale(26)}
+                        color={colors.neutral400}
+                      />
+                    ) : (
+                      <Icons.Eye
+                        size={verticalScale(26)}
+                        color={colors.neutral400}
+                      />
+                    )}
+                  </Pressable>
                 }
               />
             )}
